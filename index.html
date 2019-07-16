@@ -1,0 +1,58 @@
+<html>
+
+<head>
+    <title>Notebook</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <script src="https://unpkg.com/marked"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/moment"></script>
+
+    <div id="notebook">
+
+        <aside class="side-bar">
+            <div class="toolbar">
+                <button v-on:click="addNote" v-bind:title="addButtonTitle">
+                    <i class="material-icons">add</i>
+                    Add note
+                </button>
+                <div class="notes">
+                    <div class="note" v-for="note of sortedNotes" v-on:click="selectNote(note)"
+                        v-bind:class="{selected: note === selectedNote}">{{ note.title }}
+                        <i class="icon material-icons" v-if="note.favorite">star</i>
+                    </div>
+
+                </div>
+
+            </div>
+        </aside>
+
+        <template v-if="selectedNote">
+            <section class="main">
+                <div class="toolbar">
+                    <input v-model="selectedNote.title" placeholder="Note title" />
+                    <button @click="removeNote" title="Remove note"><i class="material-icons">delete</i></button>
+                    <button @click="favoriteNote" title="Favorite note"><i
+                            class="material-icons">{{ selectedNote.favorite ? 'star' : 'star_border' }}</i></button>
+                </div>
+                <textarea v-model="selectedNote.content"></textarea>
+                <div class="toolbar status-bar">
+                    <span class="date">
+                        <span class="label">Created</span>
+                        <span class="value">{{ selectedNote.created | date }}</span> </span>
+
+                </div>
+            </section>
+
+            <aside class="preview" v-html="notePreview"></aside>
+        </template>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
